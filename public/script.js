@@ -13,7 +13,7 @@ const buildMessage = (ev) => {
 <span class="message__header">
 <strong><i class="far fa-arrow-alt-circle-right"></i></strong>
  Event Name: 
-  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>  - <i> ${ev.date}</i></span>        
+  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>- <i> ${ev.date}</i></span>        
  <code>${ev.value}</code>
     </div>`;
 }
