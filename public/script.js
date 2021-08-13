@@ -43,7 +43,7 @@ clearHistory.addEventListener("click", (e) => {
 });
 
 send.addEventListener("click", (e) => {
-    const eventName = !!eventDispatch.value ? eventDispatch.value : null;
+    const eventName = !!eventDispatch.value ? eventDispatch.value.trim() : null;
     if (text.value.length !== 0) {
         if (!!eventName) {
             socket.emit(eventName, text.value);
@@ -52,7 +52,7 @@ send.addEventListener("click", (e) => {
             event: eventName,
             key: Date.now().toString(),
             date: new Date(Date.now()).toUTCString(),
-            value: text.value.replace(/(\r\n|\n|\r)/g, '').trim()
+            value: text.value.replace(/(\r\n|\n|\r)/g, '').trim() //Todo Clear all invalid caracter \
         });
         // text.value = "";
     }
