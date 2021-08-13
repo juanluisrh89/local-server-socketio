@@ -9,32 +9,33 @@ let messages = document.querySelector(".messages");
 
 
 const buildMessage = (ev) => {
-  return `<div class="message">
-        <b><i class="far fa-arrow-alt-circle-right"></i> Event Name:  <span> ${
-      (!!ev.event) ? ev.event : 'UNKNOWN'
-  }</span>  - ${ev.date}</b>
-        <code>${ev.value}</code>
+    return `<div class="message">
+<span class="message__header">
+<strong><i class="far fa-arrow-alt-circle-right"></i></strong>
+ Event Name: 
+  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>  - <i> ${ev.date}</i></span>        
+ <code>${ev.value}</code>
     </div>`;
 }
 const buildHistoryMessage = () => {
-  let history = JSON.parse(localStorage.getItem('messages_sended_history'));
-  if(!!history){
-      history = history.reverse();
-    history.map(ev => {
-      messagesSended.innerHTML =
-          messagesSended.innerHTML +
-          buildMessage(ev)
-    })
-  }else{
-      messagesSended.innerHTML = '';
-  }
+    messagesSended.innerHTML = ''
+    let history = JSON.parse(localStorage.getItem('messages_sended_history'));
+    if (!!history) {
+        history = history.reverse();
+        history.map(ev => {
+            messagesSended.innerHTML =
+                messagesSended.innerHTML +
+                buildMessage(ev)
+        })
+    } else {
+        messagesSended.innerHTML = '';
+    }
 
 }
 buildHistoryMessage();
 
 clearHistory.addEventListener("click", (e) => {
     const history = localStorage.getItem('messages_sended_history');
-    console.log('CLEAR HISTORY',history);
     if (!!history) {
         localStorage.removeItem('messages_sended_history');
         buildHistoryMessage();
@@ -47,31 +48,42 @@ send.addEventListener("click", (e) => {
         if (!!eventName) {
             socket.emit(eventName, text.value);
         }
-        socket.emit('internal_message', {event: eventName,key:Date.now().toString(),date:new Date(Date.now()).toUTCString(), value: text.value.replace(/(\r\n|\n|\r)/g, '').trim()});
-        text.value = "";
+        socket.emit('internal_message', {
+            event: eventName,
+            key: Date.now().toString(),
+            date: new Date(Date.now()).toUTCString(),
+            value: text.value.replace(/(\r\n|\n|\r)/g, '').trim()
+        });
+        // text.value = "";
     }
 });
 
-text.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && text.value.length !== 0) {
-        const eventName = !!eventDispatch.value ? eventDispatch.value : null;
-        if (!!eventName) {
-            socket.emit(eventName, text.value);
-        }
-        socket.emit('internal_message', {event: eventName,key:Date.now().toString(),date:new Date(Date.now()).toUTCString(), value: text.value.replace(/(\r\n|\n|\r)/g, '').trim()});
-        text.value = "";
-    }
-});
+// text.addEventListener("keydown", (e) => {
+//     if (e.key === "Enter" && text.value.length !== 0) {
+//         const eventName = !!eventDispatch.value ? eventDispatch.value : null;
+//         if (!!eventName) {
+//             socket.emit(eventName, text.value);
+//         }
+//         socket.emit('internal_message', {
+//             event: eventName,
+//             key: Date.now().toString(),
+//             date: new Date(Date.now()).toUTCString(),
+//             value: text.value.replace(/(\r\n|\n|\r)/g, '').trim()
+//         });
+//         text.value = "";
+//     }
+// });
 
 
 socket.on("createMessage", (message, userName) => {
-    messagesSended.innerHTML =
-        messagesSended.innerHTML +
-        buildMessage(message);
+    // messagesSended.innerHTML =
+    //     messagesSended.innerHTML +
+    //     buildMessage(message);
 
     const histories = JSON.parse(localStorage.getItem('messages_sended_history')) || [];
     histories.push(message);
-    localStorage.setItem('messages_sended_history', JSON.stringify(histories) );
+    localStorage.setItem('messages_sended_history', JSON.stringify(histories));
+    buildHistoryMessage();
 });
 
 
