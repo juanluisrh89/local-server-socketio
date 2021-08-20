@@ -7,13 +7,18 @@ let text = document.querySelector("#chat_message");
 let send = document.getElementById("send");
 let messages = document.querySelector(".messages");
 
+const selectFromHistory = (key) => {
+    console.log('SELECTED ',key);
+}
 
+
+// onclick="${selectFromHistory(ev.date)}"
 const buildMessage = (ev) => {
     return `<div class="message">
 <span class="message__header">
 <strong><i class="far fa-arrow-alt-circle-right"></i></strong>
  Event Name: 
-  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>- <i> ${ev.date}</i></span>        
+  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>- <i> ${ev.date}</i>  <i  class="fa fa-repeat repeat" ></i></span>        
  <code>${ev.value}</code>
     </div>`;
 }
@@ -87,4 +92,7 @@ socket.on("createMessage", (message, userName) => {
 });
 
 
+socket.on("errorMessage", (message) => {
+    alert(message);
+});
 

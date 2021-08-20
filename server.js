@@ -17,10 +17,15 @@ app.get("/sendEvent", (req, res) => {
 io.on("connection", (socket) => {
   socket.emit("CONNECT-LOCAL", '--------->><<----------');
   socket.on("internal_message", (message) => {
-    let value = (verifyValidJsonString(message.value))? JSON.parse(message.value): message.value;
-      // value = JSON.stringify(value, null, 2);
-        io.emit(message.event, value);
-    socket.emit("createMessage", message);
+      try{
+          let value = (verifyValidJsonString(message.value))? JSON.parse(message.value): message.value;
+          // value = JSON.stringify(value, null, 2);
+          io.emit(message.event, value);
+          socket.emit("createMessage", message);
+      }catch (e) {
+          socket.emit("errorMessage", e.message);
+      }
+
   });
 });
 
