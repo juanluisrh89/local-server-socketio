@@ -181,7 +181,7 @@ textarea {
   padding: 1rem;
   border-radius: 5px 5px 0 0;
 }
-i.repeat{
+i.repeat, i.action-delete{
   position: absolute;
   right: 15px;
   top: 0;
@@ -191,6 +191,10 @@ i.repeat{
   font-size: 24px;
   color: #2f80ec;
   cursor: pointer;
+}
+i.action-delete{
+  right: 60px;
+  color: #e32437;
 }
 span.message__header strong{
   color: #2f80ec;

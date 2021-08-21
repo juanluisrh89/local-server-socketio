@@ -7,8 +7,51 @@ let text = document.querySelector("#chat_message");
 let send = document.getElementById("send");
 let messages = document.querySelector(".messages");
 
-const selectFromHistory = (key) => {
-    console.log('SELECTED ',key);
+const selectFromHistoryByKey = (key,action='select') => {
+    let history = localStorage.getItem('messages_sended_history');
+    if(!!history){
+      history = JSON.parse(history);
+      const find =history.find(f => f.key === key);
+      switch (action){
+          case "select":
+              eventDispatch.value = find.event;
+              text.value = find.value;
+              break;
+          case "reload":
+              // socket.emit(find.event.trim(), find.value.replace(/(\r\n|\n|\r)/g, '').trim());
+              socket.emit('internal_message', {
+                  event: find.event.trim(),
+                  key: find.key,
+                  date: find.date,
+                  value: find.value.replace(/(\r\n|\n|\r)/g, '').trim() //Todo Clear all invalid caracter \
+              });
+              break;
+          case "delete":
+              history = history.filter( h => h.key !== key);
+              localStorage.setItem('messages_sended_history', JSON.stringify(history));
+              buildHistoryMessage();
+              break;
+
+      }
+
+    }
+}
+
+const initSubscriptionAction = () => {
+    document.querySelectorAll('.action-reload').forEach(elm => {
+        elm.addEventListener("click", (event) => {
+            console.log('event ==>> ',event);
+            const key = event.target.getAttribute("title");
+            console.log('KEY ==>> ',key);
+            selectFromHistoryByKey(key,'reload');
+        });
+    });
+    document.querySelectorAll('.action-delete').forEach(elm => {
+        elm.addEventListener("click", (event) => {
+            const key = event.target.getAttribute("title");
+            selectFromHistoryByKey(key,'delete');
+        });
+    });
 }
 
 
@@ -18,7 +61,7 @@ const buildMessage = (ev) => {
 <span class="message__header">
 <strong><i class="far fa-arrow-alt-circle-right"></i></strong>
  Event Name: 
-  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>- <i> ${ev.date}</i>  <i  class="fa fa-repeat repeat" ></i></span>        
+  <strong> ${(!!ev.event) ? ev.event : 'UNKNOWN'}</strong>- <i> ${ev.date}</i>  <i title="${ev.key}" class="fas fa-trash-alt action-delete" ></i><i title="${ev.key}" class="fa fa-repeat repeat action-reload" ></i></span>        
  <code>${ev.value}</code>
     </div>`;
 }
@@ -32,6 +75,7 @@ const buildHistoryMessage = () => {
                 messagesSended.innerHTML +
                 buildMessage(ev)
         })
+        initSubscriptionAction();
     } else {
         messagesSended.innerHTML = '';
     }
@@ -63,6 +107,7 @@ send.addEventListener("click", (e) => {
     }
 });
 
+
 // text.addEventListener("keydown", (e) => {
 //     if (e.key === "Enter" && text.value.length !== 0) {
 //         const eventName = !!eventDispatch.value ? eventDispatch.value : null;
@@ -81,14 +126,14 @@ send.addEventListener("click", (e) => {
 
 
 socket.on("createMessage", (message, userName) => {
-    // messagesSended.innerHTML =
-    //     messagesSended.innerHTML +
-    //     buildMessage(message);
-
     const histories = JSON.parse(localStorage.getItem('messages_sended_history')) || [];
-    histories.push(message);
-    localStorage.setItem('messages_sended_history', JSON.stringify(histories));
-    buildHistoryMessage();
+    const find = histories.find(f => f.key === message.key);
+    if(!find){
+        histories.push(message);
+        localStorage.setItem('messages_sended_history', JSON.stringify(histories));
+        buildHistoryMessage();
+    }
+
 });
 
 
