@@ -40,9 +40,7 @@ const selectFromHistoryByKey = (key,action='select') => {
 const initSubscriptionAction = () => {
     document.querySelectorAll('.action-reload').forEach(elm => {
         elm.addEventListener("click", (event) => {
-            console.log('event ==>> ',event);
             const key = event.target.getAttribute("title");
-            console.log('KEY ==>> ',key);
             selectFromHistoryByKey(key,'reload');
         });
     });
