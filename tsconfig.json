@@ -1,0 +1,31 @@
+{
+  "attachment": {},
+  "channel": "INSTAGRAMDIRECT",
+  "channelId": 1290,
+  "did": "17841436142096242",
+  "id": "154577205",
+  "idChat": 2,
+  "messageDate": 1630374280480,
+  "msisdn": "4568013796565952",
+  "name": "Juan Luis Rodríguez Hernández",
+  "status": "RECIBIDO",
+  "template": {
+    "elements": [
+      {
+        "buttons": [
+          {
+            "title": "",
+            "type": "web_url",
+            "url": "https://lookaside.fbsbx.com/ig_messaging_cdn/?asset_id=18125179129222867&signature=AbxiG0b6HVQzDg0X18R6HQzx0KoTYvZZEFCb6xy3xz9eNYVyhpeZ8A6OC3VTDVZGK8fnIoBOx9hDjgk_wPm5_72vn_CN-1hNd9kJCrj6LN_J9oTFCkZkw2ecl3sWg3d35jl4jHYT-zDalbMvQFosZHeoxJzYBfVsfDTNP6M3YNzGqZ_HUw"
+          }
+        ],
+        "id": "",
+        "image_url": "https://lookaside.fbsbx.com/ig_messaging_cdn/?asset_id=18125179129222867&signature=AbxiG0b6HVQzDg0X18R6HQzx0KoTYvZZEFCb6xy3xz9eNYVyhpeZ8A6OC3VTDVZGK8fnIoBOx9hDjgk_wPm5_72vn_CN-1hNd9kJCrj6LN_J9oTFCkZkw2ecl3sWg3d35jl4jHYT-zDalbMvQFosZHeoxJzYBfVsfDTNP6M3YNzGqZ_HUw",
+        "type": "image/jpeg"
+      }
+    ],
+    "origin": "instagram_shared_publication",
+    "template_type": "generic"
+  },
+  "type": "INBOUND"
+}
